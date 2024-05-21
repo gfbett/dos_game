@@ -7,8 +7,8 @@ OBJS = BUILD\game.obj BUILD\video.obj BUILD\log.obj BUILD\keyb.obj
 
 game.exe:
 	tcc $(FLAGS) $(INCLUDES) $(SOURCE ) 
-	tlink /3 -LD:\TURBOC3\LIB C0h $(OBJS ) ,game.exe,,ch 
+	tlink /3 -LD:\TURBOC3\LIB C0h $(OBJS ) ,OUT\game.exe,,ch 
 
 clean:
-	del game.exe
-	del *.obj
+	del OUT\game.exe
+	del BUILD*.obj
