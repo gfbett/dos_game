@@ -101,16 +101,33 @@ void clearScreen (char color )
     // Se usan dos operaciones para copiar todo a la memoria:
     // rep repite la operacion las veces indicadas en el registro CX, en este caso 64000
     // stosb guarda el contenido de AL a la dirección ES:DI, incrementando DI después de cada copia
-    unsigned int address = FP_SEG(vscreen);
+	unsigned int address = FP_SEG(vscreen);
     asm {
-      mov ax, [address]
-      mov es, ax
-      xor di, di // Inicializa a cero di
-      mov cx, 64000 
-      mov al, [color]
-      rep stosb 
+      	mov ax, [address]
+      	mov es, ax
+      	xor di, di // Inicializa a cero di
+      	mov cx, 64000 
+      	mov al, [color]
+      	rep stosb 
     }
 }
+
+void fillRect(int x, int y, int width, int height, char color) {
+	unsigned int address = FP_SEG(vscreen);
+
+	int end = y + height;
+	for (int i = y; i < end; i++) {	
+   		unsigned int offset_pixel =  PIXEL_OFFSET[i] + x;
+   		asm {
+        	mov es, [address]
+        	mov di, [offset_pixel]
+   		    mov al, [color]
+			mov cx, [width]
+	        rep stosb 
+ 		}
+	}
+}
+
 
 void switchBuffer() {
     FlipScreen(vscreen, videoMemory);

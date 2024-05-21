@@ -22,27 +22,21 @@ int main(void){
     randomize();
            
     clearScreen(49);
+	fillRect(100,100,50,30,30);
     switchBuffer();
-    
-    for(int z = 0; z< 100;z++) {
+	getch();
+	   
+    for(int z = 0; z< 500;z++) {
         unsigned char color = z;
-        for(int j=0;j<200;j++) {
-            char prevcolor = color;
-            for(int i=0;i<320;i++) {
-                if (i!= 0 && i %20 == 0) {
-                    color = color + 1;
-                    color = color % 256;
-                }
-                putPixel(i, j, color);
-            }
-            if (j != 0 && j % 12 == 0) {
-                color += 16;
-                color = color % 256;
-            } else {
-                color = prevcolor;
-            }
-        }
-        switchBuffer();
+    	for (int i = 0; i < 16; i++) {
+			for(int j = 0; j < 16; j++) {
+	    		int x = 20 * j;
+				int y = 12 * i;
+				fillRect(x, y, 20, 12, color);
+				color = color < 256? color+1: 0;
+			}
+		}    
+		switchBuffer();
     }
     getch();
 
