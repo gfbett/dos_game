@@ -7,7 +7,7 @@ OBJS = BUILD\game.obj BUILD\video.obj BUILD\log.obj BUILD\keyb.obj
 
 game.exe:
 	tcc $(FLAGS) $(INCLUDES) $(SOURCE ) 
-	tlink /3 -LD:\TURBOC3\LIB C0h $(OBJS ) ,OUT\game.exe,,ch 
+	tlink /3 -LD:\TURBOC3\LIB C0h $(OBJS ) ,OUT\game.exe,,FP87 mathh ch 
 
 clean:
 	del OUT\game.exe

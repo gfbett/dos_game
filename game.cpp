@@ -5,7 +5,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <dos.h>
-
+#include <time.h>
 
 
 int ctrlbrk_handler(void) {
@@ -21,11 +21,9 @@ int main(void){
     startGraphicsMode();
     randomize();
            
-    clearScreen(49);
-	fillRect(100,100,50,30,30);
-    switchBuffer();
-	getch();
-	   
+    clearScreen(0);
+    clock_t before=clock();
+	int count = 0;
     for(int z = 0; z< 500;z++) {
         unsigned char color = z;
     	for (int i = 0; i < 16; i++) {
@@ -33,15 +31,19 @@ int main(void){
 	    		int x = 20 * j;
 				int y = 12 * i;
 				fillRect(x, y, 20, 12, color);
-				color = color < 256? color+1: 0;
+				color = color < 255? color+1: 0;
 			}
 		}    
 		switchBuffer();
+        count += 1;
     }
-    getch();
+    clock_t after = clock();
 
 
     shutdownGraphicsMode();
+    float seconds = (after - before)/CLK_TCK;
+    int fps = (int) (count/seconds);
+    printf("Elapsed seconds: %f - FPS:%d", seconds, fps);
     shutdownKeyboardDetector();
     closeLog();
 
