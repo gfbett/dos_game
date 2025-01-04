@@ -13,6 +13,15 @@ int ctrlbrk_handler(void) {
     return 0;
 }
 
+unsigned char checkKey(char key) {
+    char color;
+    if (keyPressed(key)) {
+        color = 1;           
+    } else {
+        color = 4;
+    }
+    return color;
+}
 
 int main(void){
     ctrlbrk(ctrlbrk_handler);
@@ -22,30 +31,32 @@ int main(void){
     randomize();
            
     clearScreen(0);
+    unsigned char color;
     clock_t before=clock();
-	int count = 0;
-    for(int z = 0; z< 500;z++) {
-        unsigned char color = z;
-    	for (int i = 0; i < 16; i++) {
-			for(int j = 0; j < 16; j++) {
-	    		int x = 20 * j;
-				int y = 12 * i;
-				fillRect(x, y, 20, 12, color);
-				color = color < 255? color+1: 0;
-			}
-		}    
-		switchBuffer();
+    int count = 0;
+    while (1) {
+
+        fillRect(0, 50, 50, 50, checkKey(KEY_A));
+        fillRect(50, 50, 50, 50, checkKey(KEY_S));
+        fillRect(100, 50, 50, 50, checkKey(KEY_D));
+        fillRect(50, 0, 50, 50, checkKey(KEY_W));
+
+        if (keyPressed(KEY_Q) && keyPressed(KEY_ALT)) {
+            break;
+        }
+        switchBuffer();
         count += 1;
     }
     clock_t after = clock();
-
 
     shutdownGraphicsMode();
     float seconds = (after - before)/CLK_TCK;
     int fps = (int) (count/seconds);
     printf("Elapsed seconds: %f - FPS:%d", seconds, fps);
+
     shutdownKeyboardDetector();
     closeLog();
 
     return 0;
 }
+

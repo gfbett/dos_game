@@ -1,6 +1,7 @@
 #include "keyb.h"
 #include <dos.h>
 #include <stdio.h>
+#include "log.h"
 
 unsigned char normal_keys[0x60];
 unsigned char extended_keys[0x60];
@@ -15,7 +16,6 @@ static void interrupt keyb_interrupt(...) {
     rawcode = inp(0x60); /* read scancode from keyboard controller */
     make_break = !(rawcode & 0x80); /* bit 7: 0 = make, 1 = break */
     scancode = rawcode & 0x7F;
-
     if (buffer == 0xE0) { /* second byte of an extended key */
         if (scancode < 0x60) {
             extended_keys[scancode] = make_break;
@@ -41,5 +41,13 @@ void shutdownKeyboardDetector() {
     if (old_keyb_int != NULL) {
         setvect(0x09, old_keyb_int);
         old_keyb_int = NULL;
+    }
+}
+
+int keyPressed(char scancode) {
+    if(normal_keys[scancode] == 1) {
+        return 1;
+    } else {
+        return 0;
     }
 }
